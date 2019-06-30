@@ -25,6 +25,6 @@ int main()
     }
     for(int i =0;i<n;i++)
     {
-        cout<<C[i]<<endl;
+        cout<<C[i]<<'\n';
     }
 }
