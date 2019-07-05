@@ -23,7 +23,7 @@ public:
 	int GETweight(int n1, int n2);
 	int closeness_sum(int src, vector<int> dist);
 	vector< vector <int>> Betwenees(int src);
-	vector<float> Betweeness_calc(vector<vector<int >> path  , int path_num ,  vector<float> g);
+	vector<float> Betweeness_calc(vector<vector<int >> path  , int path_num ,  vector<float> g , float prev);
 	float sizeOfPath(vector<vector<int >> path, int path_num);
 
 };
@@ -179,35 +179,45 @@ float Graph::sizeOfPath(vector<vector<int >> path, int path_num)
 	return thesize;
 }
 
-vector<float> Graph::Betweeness_calc(vector<vector<int >> path  , int path_num , vector<float> g)
+vector<float> Graph::Betweeness_calc(vector<vector<int >> path  , int path_num , vector<float> g ,float prev)
 {
 	int temp;
-	int num22;
+
 	vector<float> g2(Nodes_num ,  0);
 		for (int j = 0; j < path[path_num].size(); j++)//loop in list
 		{
 
 			temp = path[path_num][j];
 			//g2[temp] ++;
-			g2[temp] = ( sizeOfPath(path, temp)) / sizeOfPath(path , path_num );
-			cout<<"j = " << j<<"\n";
-			cout<<"path[path_num].size() = " << path[path_num].size()<<"\n";
-			cout<<"path_num = " << path_num<<"\n";
-			cout<<"temp = " << temp<<"\n";
-			cout<<"sizeOfPath(path , temp) = " <<sizeOfPath(path , temp)<<"\n";
-			cout<<"sizeOfPath(path , path_num) = " <<sizeOfPath(path , path_num)<<"\n";
+			if( prev ==0 )
+			{
+			    g2[temp] = ( sizeOfPath(path, temp)) / sizeOfPath(path , path_num );
+			}
+			else
+            {
+             g2[temp] = ( sizeOfPath(path, temp)) / prev;
+            }
+			//cout<<"j = " << j<<"\n";
+			//cout<<"prev = " << prev<<"\n";
+			//cout<<"path[path_num].size() = " << path[path_num].size()<<"\n";
+			//cout<<"path_num = " << path_num<<"\n";
+			//cout<<"temp = " << temp<<"\n";
+			//cout<<"sizeOfPath(path , temp) = " <<sizeOfPath(path , temp)<<"\n";
+			//cout<<"sizeOfPath(path , path_num) = " <<sizeOfPath(path , path_num)<<"\n";
 
 
 
-			cout << g2[temp] <<  "\n" ;
-			cout << sizeOfPath(path, temp) << "\n";
+			//cout <<"g2["<<temp<<" = "<< g2[temp] <<  "\n" ;
+			//cout << sizeOfPath(path, temp) << "\n";
 
 			g[temp] = g[temp] + g2[temp];
 
 			if ( path[temp].size() != 0)
 			{
+			    prev =sizeOfPath(path , path_num);
 
-				 g = Betweeness_calc(path, temp , g );
+				 g = Betweeness_calc(path, temp , g , prev);
+				 prev =0;
 			}
 		}
 	return g;
@@ -236,7 +246,7 @@ int main()
 	{
 	//	cout << nodes_edges[k] << "\n";
 	}
-	cout << "....." << "\n";
+	//cout << "....." << "\n";
 
 	vector<int> dist(my_graph.Nodes_num, INF);
 
@@ -250,54 +260,63 @@ int main()
 
 	vector<float > g(Nodes, 0);
 	vector<vector<int>> path(Nodes) ;
-	path = my_graph.Betwenees(0);
+/*	path = my_graph.Betwenees(0);
+
 
 	for (int i = 1 ; i < Nodes; i++)
 	{
-		g = my_graph.Betweeness_calc(path, i, g);
+		g = my_graph.Betweeness_calc(path, i, g,0);
 	}
-	for (int d = 0 ; d<6 ; d++)
+	*/
+	/*
+	msh fkraa de bt3ml eh
+	 for (int d = 0 ; d<6 ; d++)
     {
         cout<<"sizeOfPath = \n";
        cout<< my_graph.sizeOfPath(path, d)<<"\n";
     }
+    */
 
 
-/*
+
 	for (int k = 0; k < Nodes; k++)
 	{
-		cout << ",,,,,,,,\n";
+		//cout << ",,,,,,,,\n";
 
 		path = my_graph.Betwenees(k);
 
 		for (int i = 0; i < Nodes; i++)
 		{
-			for (int j = 0; j < path[i].size(); j++)
+			/*for (int j = 0; j < path[i].size(); j++)
 			{
 				cout << path[i][j] << "\n";
 			}
+			*/
 		}
 
 		for (int i = k+1; i < Nodes; i++)
 		{
-			g = my_graph.Betweeness_calc(path, i , g);
+			g = my_graph.Betweeness_calc(path, i , g ,0);
 		}
 
-		cout << ",,,,,,,,\n";
+		/*cout << ",,,,,,,,\n";
 		for (int i = 0; i < Nodes; i++)
 		{
+		     cout<< "g of "<<i<< "=  ";
 			cout << g[i] << "\n";
 		}
+		*/
 
 
 	}
-	*/
-	cout << ",,,,,,,,\n";
+
+	//cout << ",,,,,,,,\n";
 	for (int i = 0; i < Nodes; i++)
 	{
-	    cout<< "g of "<<i<< "=  ";
+	   // cout<< "g of "<<i<< "=  ";
 		cout << g[i] << "\n" ;
 	}
+
 
 
 }
