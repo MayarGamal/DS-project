@@ -214,7 +214,11 @@ vector<float> Graph::Betweeness_calc(vector<vector<int >> path  , int path_num ,
 
 			if ( path[temp].size() != 0)
 			{
-			    prev =sizeOfPath(path , path_num);
+			   if(prev ==0)
+                {
+                    prev =sizeOfPath(path , path_num);
+
+                }
 
 				 g = Betweeness_calc(path, temp , g , prev);
 				 prev =0;
@@ -242,11 +246,12 @@ int main()
 	}
 
 
-	for (int k = 0; k < Nodes; k++)
+/*	for (int k = 0; k < Nodes; k++)
 	{
-	//	cout << nodes_edges[k] << "\n";
+		cout << nodes_edges[k] << "\n";
 	}
-	//cout << "....." << "\n";
+	cout << "....." << "\n";
+	*/
 
 	vector<int> dist(my_graph.Nodes_num, INF);
 
@@ -260,14 +265,14 @@ int main()
 
 	vector<float > g(Nodes, 0);
 	vector<vector<int>> path(Nodes) ;
-/*	path = my_graph.Betwenees(0);
+	/*path = my_graph.Betwenees(0);
 
 
 	for (int i = 1 ; i < Nodes; i++)
 	{
 		g = my_graph.Betweeness_calc(path, i, g,0);
 	}
-	*/
+*/
 	/*
 	msh fkraa de bt3ml eh
 	 for (int d = 0 ; d<6 ; d++)
@@ -277,6 +282,7 @@ int main()
     }
     */
 
+//for all nodes
 
 
 	for (int k = 0; k < Nodes; k++)
@@ -285,35 +291,36 @@ int main()
 
 		path = my_graph.Betwenees(k);
 
-		for (int i = 0; i < Nodes; i++)
+		/*for (int i = 0; i < Nodes; i++)
 		{
-			/*for (int j = 0; j < path[i].size(); j++)
+			for (int j = 0; j < path[i].size(); j++)
 			{
 				cout << path[i][j] << "\n";
 			}
-			*/
-		}
 
+		}
+*/
 		for (int i = k+1; i < Nodes; i++)
 		{
 			g = my_graph.Betweeness_calc(path, i , g ,0);
 		}
 
-		/*cout << ",,,,,,,,\n";
+	/*	cout << ",,,,,,,,\n";
 		for (int i = 0; i < Nodes; i++)
 		{
 		     cout<< "g of "<<i<< "=  ";
 			cout << g[i] << "\n";
 		}
-		*/
 
+*/
 
 	}
+
 
 	//cout << ",,,,,,,,\n";
 	for (int i = 0; i < Nodes; i++)
 	{
-	   // cout<< "g of "<<i<< "=  ";
+	    cout<< "g of "<<i<< "=  ";
 		cout << g[i] << "\n" ;
 	}
 
