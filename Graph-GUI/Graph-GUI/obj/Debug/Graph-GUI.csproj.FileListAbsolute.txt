@@ -1,0 +1,10 @@
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\bin\Debug\Graph-GUI.exe.config
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\bin\Debug\Graph-GUI.exe
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\bin\Debug\Graph-GUI.pdb
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph-GUI.csprojAssemblyReference.cache
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph_GUI.Form1.resources
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph_GUI.Properties.Resources.resources
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph-GUI.csproj.GenerateResource.cache
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph-GUI.csproj.CoreCompileInputs.cache
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph-GUI.exe
+C:\Users\Sara\source\repos\Graph-GUI\Graph-GUI\obj\Debug\Graph-GUI.pdb
