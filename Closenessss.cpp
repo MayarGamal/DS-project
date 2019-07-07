@@ -1,98 +1,170 @@
-
 #include <iostream>
-#include<bits/stdc++.h>
-#include<math.h>
-using namespace std;
-# define INF 0x3f3f3f3f
+#include <vector>
+#include <list>
+#include <math.h>
 
-typedef pair<int, int> iPair;
+#define INF 0x3f3f3f3f
+
+using namespace std;
 
 class Graph
 {
-    int V;
-    list< pair<int, int> > *adj;
-
 public:
-    Graph(int V);
-    void addEdge(int u, int v, int w);
-    int shortestPathesSum(int s);
+	int Nodes_num;
+	int edges_num;
+	int node1, node2;
+	int weight;
+	vector< list< pair<int, int> > >  adjList;
+
+	Graph(int Nodes);
+	void add_edge(int n1, int n2, int w);
+	int minDist(vector<int> dist, vector<bool> visited);
+	bool IsConnected(int n1, int n2);
+	int GETweight(int n1, int n2);
+	int closeness_sum(int src, vector<int> dist);
+	vector< vector <int>> Betwenees(int src);
+	vector<float> Betweeness_calc(vector<vector<int >> path  , int path_num ,  vector<float> g , float prev);
+	float sizeOfPath(vector<vector<int >> path, int path_num);
+
 };
 
-Graph::Graph(int V)
+Graph::Graph(int Nodes)
 {
-    this->V = V;
-    adj = new list<iPair> [V];
+	Nodes_num = Nodes;
+	adjList = vector< list< pair<int, int> > >(Nodes_num);
 }
 
-void Graph::addEdge(int u, int v, int w)
+void Graph::add_edge(int n1, int n2, int w)
 {
-    adj[u].push_back(make_pair(v, w));
-    adj[v].push_back(make_pair(u, w));
+	node1 = n1;
+	node2 = n2;
+	weight = w;
+	adjList[node1].push_back(make_pair(node2, weight));
+	adjList[node2].push_back(make_pair(node1, weight));
+
 }
 
-int Graph::shortestPathesSum(int src)
+int Graph::minDist(vector<int> dist, vector<bool> visited)
 {
-    int sumOfshortPathes =0;
-    priority_queue< iPair, vector <iPair> , greater<iPair> > pq;
-    vector<int> dist(V, INF);
-    pq.push(make_pair(0, src));
-    dist[src] = 0;
-
-
-    while (!pq.empty())
-    {
-        int u = pq.top().second;
-        pq.pop();
-        list< pair<int, int> >::iterator i;
-        for (i = adj[u].begin(); i != adj[u].end(); ++i)
-        {
-
-            int v = (*i).first;
-            int weight = (*i).second;
-            if (dist[v] > dist[u] + weight)
-            {
-                dist[v] = dist[u] + weight;
-                pq.push(make_pair(dist[v], v));
-            }
-        }
-    }
-
-    for (int i = 0; i < V; ++i)
-    {
-        sumOfshortPathes +=dist[i];
-    }
-         return sumOfshortPathes;
+	int min = INF;
+	int min_index;
+	for (int i = 0; i < Nodes_num; i++)
+	{
+		if (dist[i] <= min && visited[i] == false)
+		{
+			min = dist[i];
+			min_index = i;
+		}
+	}
+	return min_index;
 }
+
+bool Graph::IsConnected(int n1, int n2)
+{
+	for (list< pair<int, int> > ::iterator it = adjList[n1].begin();
+		it != adjList[n1].end(); it++)
+	{
+		if (it->first == n2)
+			return true;
+	}
+	return false;
+}
+
+int Graph::GETweight(int n1, int n2)
+{
+	for (list< pair<int, int> > ::iterator it = adjList[n1].begin();
+		it != adjList[n1].end(); it++)
+	{
+		int w;
+		if (it->first == n2)
+		{
+			w = it->second;
+			return w;
+		}
+	}
+}
+
+int Graph::closeness_sum(int src, vector<int> dist)
+{
+	vector<bool> visited(Nodes_num, false);
+
+	dist[src] = 0;
+
+	int w;
+
+	for (int i = 0; i < Nodes_num - 1; i++)
+	{
+		int min_node = minDist(dist, visited);
+		//cout << "min node" << min_node;
+
+		visited[min_node] = true;
+
+		for (int j = 0; j < Nodes_num; j++)
+		{
+			if (!visited[j] && IsConnected(min_node, j))
+			{
+				//cout << "j  " << j;
+
+				w = GETweight(min_node, j);
+				//cout << "w  " << w;
+
+				if (dist[min_node] != INF && dist[min_node] + w < dist[j])
+				{
+					dist[j] = dist[min_node] + w;
+					//cout << "dist"<< dist[j];
+				}
+			}
+		}
+	}
+	int sum = 0;
+	for (int k = 0; k < Nodes_num; k++)
+	{
+		sum = sum + dist[k];
+	}
+	return sum;
+}
+
+
+
+
 int main()
 {
-    int n,m;
-    double l,k;
-    double*C;
-    C=new double[n];
-    cin>>n>>m;
-    l=n-1;
-    int node1,node2,weight;
-    Graph MyGraph(n);
+	int Nodes, edges;
+	cin >> Nodes >> edges;
+	vector<int> nodes_edges(Nodes, 0);
+	int node1, node2, weight;
 
-    for(int i=0;i<m;i++)
-    {
-        cin>>node1>>node2>>weight;
-    MyGraph.addEdge(node1,node2,weight) ;
+	Graph my_graph(Nodes);
 
-    }
+	for (int i = 0; i < edges; i++)
+	{
+		cin >> node1 >> node2 >> weight;
+		nodes_edges[node1]++;
+		nodes_edges[node2]++;
+		my_graph.add_edge(node1, node2, weight);
+	}
 
-    for(int i=0;i<n;i++)
-    {
 
-        k=MyGraph.shortestPathesSum(i);
-       // cout<<k<<endl;
-      C[i]=(l/k);
-    }
-    for(int i=0;i<n;i++)
-    {
-        //cout<<"999";
-        cout<<C[i]<<'\n';
-    }
+/*	for (int k = 0; k < Nodes; k++)
+	{
+		cout << nodes_edges[k] << "\n";
+	}
+	cout << "....." << "\n";
+	*/
+
+	vector<int> dist(my_graph.Nodes_num, INF);
+
+	float sum, ans;
+	for (int i = 0; i < Nodes; i++)
+	{
+		sum = my_graph.closeness_sum( i, dist);
+		ans = (Nodes - 1) / sum;
+		cout << ans << "\n";
+	}
+
+
+
+//for all nodes
 
 
 
